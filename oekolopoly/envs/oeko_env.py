@@ -6,7 +6,13 @@ class OekoEnv(gym.Env):
 #  metadata = {'render.modes': ['human']}
 
   def __init__(self):
-    pass
+#    super(CustomEnv, self).__init__()
+    
+#    self.action_space = 
+    
+#    self.observation_space = 
+    
+#    self.state =
   
   def step(self, action):
     pass
