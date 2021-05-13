@@ -5,3 +5,5 @@ register(
     entry_point='oekolopoly.envs:OekoEnv',
 )
 
+#env = gym.make('oekolopoly-v0')
+
