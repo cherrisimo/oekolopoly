@@ -1,3 +1,6 @@
+
+#SOURCE: https://stable-baselines.readthedocs.io/en/master/guide/custom_env.html
+
 import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
