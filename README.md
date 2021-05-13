@@ -1,0 +1,2 @@
+# oekolopoly
+Praxisprojekt SS21
