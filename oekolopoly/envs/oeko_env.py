@@ -3,7 +3,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 
 class OekoEnv(gym.Env):
-  metadata = {'render.modes': ['human']}
+#  metadata = {'render.modes': ['human']}
 
   def __init__(self):
     pass
@@ -14,8 +14,11 @@ class OekoEnv(gym.Env):
   def reset(self):
     pass
   
+  """
   def render(self, mode='human'):
     pass
   
   def close(self):
     pass
+ 
+  """
