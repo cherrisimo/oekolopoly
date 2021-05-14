@@ -14,8 +14,6 @@ class OekoEnv(gym.Env):
 #    self.action_space = 
     
 #    self.observation_space = 
-    
-#    self.state =
   
   def step(self, action):
     pass
