@@ -1,1 +1,1 @@
-from gym_foo.envs.oeko_env import OekoEnv
+from oekolopoly.envs.oeko_env import OekoEnv
