@@ -2,14 +2,13 @@ Dieses Projekt basiert sich auf dem kybernetischen Spiel Ökolopoly entwickelt v
 
 ## gym-oekolopoly
 Der Oekolopoly Environment benutzt diskrete Observation und Action Spaces und stellt eine vereinfachte Version des Spiels mit einem Startzustand und folgenden Funktionen zur Verfügung:
-- [x] Verteilung von Aktionspunkten auf die 5 Bereiche
-- [x] Genaue Abbildung der Wirkungsgefüge jedes Bereichs
+- [x] Verteilung von Aktionspunkten auf die erlaubten 5 Bereiche
+- [x] Genaue Abbildung der Wirkungsgefüge für jeden Bereich
 - [x] Berechnung von Aktionspunkten am Ende jeder Runde
 - [x] Berechnung Bilanz am Ende des Spiels
 
 ## Structure
-Reset
-Test cases
+
 
 ## Dependencies
 ```
