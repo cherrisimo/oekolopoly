@@ -7,7 +7,7 @@ Der Oekolopoly Environment benutzt diskrete Observation und Action Spaces und st
 [x] Berechnung von Aktionspunkten am Ende jeder Runde
 [x] Berechnung Bilanz am Ende des Spiels
 
-### Structure
+## Structure
 Reset
 Test cases
 
