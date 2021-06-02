@@ -316,3 +316,13 @@ class OekoEnv(gym.Env):
         ])
         
         return self.V
+    
+    if __name__ == '__main__':
+    env = OekoEnv()
+    print("Reset: ", env.reset())
+    print("Step 1:  ", env.step((1,   #0 Sanierung
+                                 1  +28,   #1 Produktion
+                                 1,   #2 Aufklärung
+                                 1,   #3 Lebensqualität
+                                 1,   #4 Vermehrungsrate
+                                 0  +5   ))) #box9 special case
