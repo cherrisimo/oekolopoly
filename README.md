@@ -11,13 +11,13 @@ Der Oekolopoly Environment benutzt diskrete Observation und Action Spaces und st
 Reset
 Test cases
 
-### Dependencies
+## Dependencies
 ```
 pip install gym
 pip install PyQt5
 ```
 
-### Installation
+## Installation
 ```
 cd oekolopoly
 pip install -e .
