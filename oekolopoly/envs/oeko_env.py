@@ -52,16 +52,15 @@ class OekoEnv(gym.Env):
     def step(self, action):
         assert (self.action_space.contains (action))
 
-        #print ("action_space:", action)
+        # Transform action space
         action = list(action)
         action[self.PRODUKTION] += self.Amin[self.PRODUKTION]
         action[5] += self.Amin[5]
         extra_points = action[5]
-        #print ("game_space  :", action)
-
+        
+        #Init
         done = False
         self.V[self.VALID_TURN] = 1
-        strategy_points = 0
         self.reward = 0
 
         used_points = 0
@@ -222,7 +221,6 @@ class OekoEnv(gym.Env):
                 #print("VERMEHRUNGSRATE: ", self.V[self.VERMEHRUNGSRATE])
                 #print("Box 13:", box13)
 
-            #prev_politik = self.V[self.POLITIK]
             self.V[self.POLITIK] += box12
             if self.V[self.POLITIK] not in range (-10, 38): done = True
             if not done:
@@ -240,7 +238,6 @@ class OekoEnv(gym.Env):
                 #print("Box W:", boxW)
             
             self.V[self.LEBENSQUALITAET] += box14
-            #prev_boxD = boxD
             if self.V[self.LEBENSQUALITAET] not in range (1, 30): done = True
             if not done:
                 box10, box11, box12, boxD = gb.get_box10_box11_box12_and_boxD_from_region3 (self.V[self.LEBENSQUALITAET])
@@ -252,19 +249,6 @@ class OekoEnv(gym.Env):
 
             self.V[self.POINTS] -= used_points            
             self.V[self.ROUND] += 1
-
-            # print("\n############################# ROUND %d #############################" %self.V[self.ROUND])
-            # print("Points avilable at the beginning: ", self.V[self.POINTS])
-            # print("Points left: ", self.V[self.POINTS])
-            #print("Round: %d ;" %self.V[self.ROUND], "Points left: %d" %self.V[self.POINTS])
-
-            #Points for next round
-            
-            
-            self.V[self.POINTS] += boxA * boxV
-            self.V[self.POINTS] += boxB
-            self.V[self.POINTS] += boxC
-            self.V[self.POINTS] += boxD
             
 
             if self.V[self.POINTS] <  0: self.V[self.POINTS] = 0
@@ -274,14 +258,27 @@ class OekoEnv(gym.Env):
                 if self.V[i] not in range (self.Vmin[i], self.Vmax[i] + 1):
                     self.V[i] = max(self.Vmin[i], min(self.Vmax[i], self.V[i]))
                     done = True
+                    
+                    
+            #Points for next round
+            box14, boxA, boxW = gb.get_box14_boxA_and_boxW_from_region6 (self.V[self.BEVOELKERUNG])
+            boxB = gb.get_boxB_from_region7 (self.V[self.POLITIK])
+            box3, box4, boxC, boxV    = gb.get_box3_box4_boxC_and_boxV_from_region1    (self.V[self.PRODUKTION])
+            box10, box11, box12, boxD = gb.get_box10_box11_box12_and_boxD_from_region3 (self.V[self.LEBENSQUALITAET])
+            
+            self.V[self.POINTS] += boxA * boxV
+            self.V[self.POINTS] += boxB
+            self.V[self.POINTS] += boxC
+            self.V[self.POINTS] += boxD
 
             if self.V[self.ROUND] == 30: done = True
 
+            # Game does not end until round 10
             #if done and self.V[self.ROUND] < 10: done = False
 
             if done:
                 boxD = max(-6, min(5, boxD))
-                a = float(abs((boxD*3) + self.V[self.POLITIK])*10)
+                a = float( (boxD*3 + self.V[self.POLITIK]) *10)
                 b = float(self.V[self.ROUND] + 3)
 
                 # a = float(abs((prev_boxD*3) + prev_politik)*10)
@@ -289,8 +286,7 @@ class OekoEnv(gym.Env):
                 # print ("prev_POLITIK:", prev_politik)
                 # print ("a:",    a)
                 # print ("b:",    b)
-                strategy_points = float(a/b)
-                self.reward = strategy_points
+                self.reward = float(a/b)
                 #print("Type Strategy points: ", type(strategy_points))
         else:
             self.V[self.VALID_TURN] = 0
@@ -300,7 +296,7 @@ class OekoEnv(gym.Env):
 
         self.obs = list(self.V - self.Vmin)
         assert (self.observation_space.contains(self.obs))
-        return self.obs, self.reward, done, {'strategy_points': strategy_points}
+        return self.obs, self.reward, done, {}
 
 
     def reset(self):
