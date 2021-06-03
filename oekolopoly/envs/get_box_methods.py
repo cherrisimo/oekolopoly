@@ -1,6 +1,4 @@
 def get_box1_and_box2_from_region0 (region0):
-    # if region0 not in (1,30): return 0,0
-    # print (region0)
 
     #Box 1 Sanierung-Umweltbelastung 0-5
     if   region0  <  2: box1 =  0
@@ -16,7 +14,7 @@ def get_box1_and_box2_from_region0 (region0):
      
     #Box 2 Sanierung-Sanierung 0-0
     if   region0  < 22: box2 =  0
-    elif region0  < 24: box2 = -1  # self.regions[5] -= 1
+    elif region0  < 24: box2 = -1
     elif region0  < 26: box2 = -2
     elif region0 == 26: box2 = -3
     elif region0 == 27: box2 = -4
@@ -27,8 +25,6 @@ def get_box1_and_box2_from_region0 (region0):
 
 
 def get_box3_box4_boxC_and_boxV_from_region1(region1):
-    # if region1 not in (1,30): return 0,0,0,0
-    # print (region1)
     
     #Box 3 Produktion-Produktion 4-4
     if   region1  <  7:                     box3 = 0
@@ -83,8 +79,6 @@ def get_box3_box4_boxC_and_boxV_from_region1(region1):
 
 
 def get_box5_and_box6_from_region5 (region5):
-    # if region5 not in (1,30): return 0,0
-    # print (region5)
     
     #Box 5 Umweltbelastung-Umweltbelastung 5-5
     if   region5  <  4 or region5 == 28 or region5 == 29: box5 =  0
@@ -114,8 +108,6 @@ def get_box5_and_box6_from_region5 (region5):
 
 
 def get_box7_box8_and_box9_from_region2(region2, extra_points):
-    # if region2 not in (1,30): return 0,0,0
-    # print (region2, extra_points)
     
     #Box 7 Aufklärung-Aufklärung 1-1
     if   region2  <  3 or region2 in range(6, 15) or region2 == 29: box7 = 0
@@ -148,8 +140,6 @@ def get_box7_box8_and_box9_from_region2(region2, extra_points):
 
 
 def get_box10_box11_box12_and_boxD_from_region3(region3):
-    # if region3 not in (1,30): return 0,0,0,0
-    # print (region3)
     
     #Box 10 Lebensqualität-Lebensqualität 2-2
     if   region3 == 1 or region3  in range(4,10) or region3  in range(16,18) or region3  == 29: box10 = 0
@@ -201,8 +191,6 @@ def get_box10_box11_box12_and_boxD_from_region3(region3):
             
 
 def get_box13_from_region4(region4):
-    # if region4 not in (1,30): return 0
-    # print (region4)
     
     #Box 13 Vermehrungsrate-Bevölkerung 3-6
     if   region4  <  3: box13 = -4
@@ -218,8 +206,6 @@ def get_box13_from_region4(region4):
             
 
 def get_box14_boxA_and_boxW_from_region6(region6):
-    # if region6 not in (1,49): return 0,0,0
-    # print (region6)
     
     #Box 14 Bevölkerung-Lebensqualität 6-2
     if   region6  < 16: box14 = 0
@@ -255,13 +241,6 @@ def get_box14_boxA_and_boxW_from_region6(region6):
             
 
 def get_boxB_from_region7(region7):
-    '''
-    x = -10,..., 0,..., 37
-    y = x + 11
-    y = 1,..., 11,..., 48
-    '''
-    # print (region7)
-    # if region7 not in (1,49): return 0
 
     #Box B Politik-Aktionspunkte 7-A
     if   region7 == -10: boxB = -5
