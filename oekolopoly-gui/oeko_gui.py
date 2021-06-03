@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap, QIcon, QFont
+from PyQt5.QtGui import QPixmap, QIcon, QFont, QBrush, QColor
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QPushButton, QSlider, QLabel, QTableWidget, QTableWidgetItem, QHBoxLayout, QVBoxLayout, QGridLayout
 
 import gym
@@ -123,7 +123,7 @@ def step (step_button, env, action_sliders, obs_table, obs_status, points_label)
     if valid_move:
         if done:
             step_button.setEnabled (False)
-            obs_status.setText ("Done | Reward: {}".format(env.reward))
+            obs_status.setText ("Done | Bilanz: {}".format(env.reward))
             for action_slider in action_sliders: action_slider.reset ()
         else:
             obs_status.setText ("Round {}".format(env.V[env.ROUND]))
@@ -200,9 +200,11 @@ def main ():
     title_font.setPointSize (11)
     
     text_font = QFont ()
-    #text_font.setFamily ('Montserrat')
     text_font.setWeight (63)
     text_font.setPointSize (9)
+    
+    column_font = QFont ()
+    column_font.setItalic(True)
     
     controls_title = QLabel ("Aktionslider")
     controls_title.setFont (title_font)
@@ -253,6 +255,10 @@ def main ():
     for i in range (len (table_headers)):
         row_header = QTableWidgetItem (table_headers[i])
         obs_table.setVerticalHeaderItem (i, row_header)
+        if i == len (table_headers) - 1 or i == len (table_headers) - 2 or i == len (table_headers) - 3:
+            row_header.setFont(column_font)
+        
+    
 
     # Set status
     obs_status = QLabel ()
