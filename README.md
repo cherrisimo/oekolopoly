@@ -21,6 +21,7 @@ pip install PyQt5
 
 ## Installation
 ```
+git clone -ssh link-
 cd oekolopoly
 pip install -e .
 ```
