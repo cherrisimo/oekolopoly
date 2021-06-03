@@ -15,7 +15,6 @@ Der Oekolopoly Environment benutzt diskrete Observation und Action Spaces und st
 ```
 conda install git
 conda install pip
-git clone 
 pip install gym
 pip install PyQt5
 ```
