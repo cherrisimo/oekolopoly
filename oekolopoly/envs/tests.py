@@ -5,6 +5,8 @@ print("Reset: ", env.reset())
 print()
 
 instructions = (
+    
+    # Test if given value is out ouf bounds 
     ('reset', "Assert Test"),
     ('step' , (1,  2,  3,  2,  0,  0)),
     ('step' , (40,  0,  0,  0,  0,  0)),
@@ -14,20 +16,29 @@ instructions = (
     ('step' , (20,  0,  0,  0,  0,  0)),
     ('step' , (0,  0,  0,  0,  0,  0)),
 
+    # Test of special case Aufklärung - Fenster 9 - Vermehrungsrate
+    # If max 4 points are allowed but 5 are given, 4 points are added to the region
+
     ('reset', "Extra Points Test (0)", (1, 12, 26,  10, 20, 13, 21, 0, 1, 0, 8)),
     ('step' , (0,  0,  0,  0,  0,  0)),
 
     ('reset', "Extra Points Test (4)", (1, 12, 26,  10, 20, 13, 21, 0, 1, 0, 8)),
-    ('step' , (0,  0,  0,  0,  0,  5)),
+    ('step' , (0,  0,  0,  0,  0,  4)),
 
     ('reset', "Extra Points Test (5)", (1, 12, 26,  10, 20, 13, 21, 0, 1, 0, 8)),
     ('step' , (0,  0,  0,  0,  0,  5)),
 
     ('reset', "Extra Points Test (-4)", (1, 12, 26,  10, 20, 13, 21, 0, 1, 0, 8)),
-    ('step' , (0,  0,  0,  0,  0, -5)),
+    ('step' , (0,  0,  0,  0,  0, -4)),
 
     ('reset', "Extra Points Test (-5)", (1, 12, 26,  10, 20, 13, 21, 0, 1, 0, 8)),
     ('step' , (0,  0,  0,  0,  0, -5)),
+    
+    ('reset', "Extra Points Test (-2)", (1, 12, 26,  10, 20, 13, 21, 0, 1, 0, 8)),
+    ('step' , (0,  0,  0,  0,  0, -2)),
+    
+    ('reset', "Extra Points Test (3)", (1, 12, 26,  10, 20, 13, 21, 0, 1, 0, 8)),
+    ('step' , (0,  0,  0,  0,  0, -2)),
 
     ('reset', "Complete game test"),
     ('step' , (1,  2,  3,  2,  0,  0)),
