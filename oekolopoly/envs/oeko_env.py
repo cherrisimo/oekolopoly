@@ -50,7 +50,7 @@ class OekoEnv(gym.Env):
             spaces.Discrete(37)))   # 10 points
     
     def step(self, action):
-        assert (self.action_space.contains(action))
+        assert (self.action_space.contains (action))
 
         #print ("action_space:", action)
         action = list(action)
@@ -253,9 +253,9 @@ class OekoEnv(gym.Env):
             self.V[self.POINTS] -= used_points            
             self.V[self.ROUND] += 1
 
-            print("\n############################# ROUND %d #############################" %self.V[self.ROUND])
-            print("Points avilable at the beginning: ", self.V[self.POINTS])
-            print("Points left: ", self.V[self.POINTS])
+            # print("\n############################# ROUND %d #############################" %self.V[self.ROUND])
+            # print("Points avilable at the beginning: ", self.V[self.POINTS])
+            # print("Points left: ", self.V[self.POINTS])
             #print("Round: %d ;" %self.V[self.ROUND], "Points left: %d" %self.V[self.POINTS])
 
             #Points for next round
@@ -295,6 +295,9 @@ class OekoEnv(gym.Env):
         else:
             self.V[self.VALID_TURN] = 0
 
+        if not self.V[self.VALID_TURN]:
+            raise ValueError ("Invalid turn")
+
         self.obs = list(self.V - self.Vmin)
         assert (self.observation_space.contains(self.obs))
         return self.obs, self.reward, done, {'strategy_points': strategy_points}
@@ -316,13 +319,3 @@ class OekoEnv(gym.Env):
         ])
         
         return self.V
-    
-    if __name__ == '__main__':
-        env = OekoEnv()
-        print("Reset: ", env.reset())
-        print("Step 1:  ", env.step((1,   #0 Sanierung
-                                 1  +28,   #1 Produktion
-                                 1,   #2 Aufklärung
-                                 1,   #3 Lebensqualität
-                                 1,   #4 Vermehrungsrate
-                                 0  +5   ))) #box9 special case
