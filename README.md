@@ -1,5 +1,7 @@
 ## gym-oekolopoly [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-395/)
 
+[![Python 3.9](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9-blue)](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9-blue)
+
 Dieses Projekt basiert sich auf dem kybernetischen Spiel Ökolopoly entwickelt von Frederic Vester und veröffentlicht in 1983. 
 
 Der Oekolopoly Environment benutzt diskrete Observation und Action Spaces und stellt eine vereinfachte Version des Spiels mit einem Startzustand und folgenden Funktionen zur Verfügung:
