@@ -45,7 +45,8 @@ class ActionSlider:
         self.slider = QSlider (Qt.Horizontal)
         self.slider.setMinimum(self.min)
         self.slider.setMaximum(self.max)
-        self.slider.valueChanged.connect (lambda value: self.change (value))
+
+        self.slider.valueChanged.connect (self.onchange)
 
         self.layout = QGridLayout ()
         self.layout.setHorizontalSpacing (10)
@@ -57,12 +58,16 @@ class ActionSlider:
         self.widget = QWidget ()
         self.widget.setLayout (self.layout)
         
-
         self.reset ()
+
+    def onchange (self, value):
+        self.change (value)
 
     def reset (self):
         self.value = self.default
+        self.slider.valueChanged.disconnect (self.onchange)
         self.slider.setValue (self.default)
+        self.slider.valueChanged.connect (self.onchange)
         self.set_label ()
 
     def change (self, value):
@@ -73,7 +78,10 @@ class ActionSlider:
                 self.value -= available_points
             else:
                 self.value += available_points
+
+            self.slider.valueChanged.disconnect (self.onchange)
             self.slider.setValue (self.value)
+            self.slider.valueChanged.connect (self.onchange)
         
         self.set_label ()
         update_points_label (self.points_label, self.env, self.sliders)
@@ -105,26 +113,26 @@ def step (step_button, env, action_sliders, obs_table, obs_status, points_label)
 
     action[env.PRODUKTION] -= env.Amin[env.PRODUKTION]
     action[5] -= env.Amin[5]
-    # try:
-    obs, reward, done, info = env.step (action)
-    # except:
-    #     obs_status.setText ('Invalid move')
-    
+    try:
+        obs, reward, done, info = env.step (action)
+        valid_move = True
+    except ValueError as e:
+        obs_status.setText (str(e))
+        valid_move = False
 
-    if done:
-        step_button.setEnabled (False)
-        obs_status.setText ("Done | Reward: {}".format(env.reward))
-    elif not env.V[env.VALID_TURN]:
-        obs_status.setText ("Invalid move")
-    else:
-        obs_status.setText ("Round {}".format(env.V[env.ROUND]))
-    
-    
+    if valid_move:
+        if done:
+            step_button.setEnabled (False)
+            obs_status.setText ("Done | Reward: {}".format(env.reward))
+            for action_slider in action_sliders: action_slider.reset ()
+        else:
+            obs_status.setText ("Round {}".format(env.V[env.ROUND]))
+            for action_slider in action_sliders: action_slider.reset ()
 
-    if env.V[env.VALID_TURN]:
-        update_obs_table (obs_table, list(env.V))
+        if env.V[env.VALID_TURN]:
+            update_obs_table (obs_table, list(env.V))
 
-    update_points_label (points_label, env, action_sliders)
+        update_points_label (points_label, env, action_sliders)
 
 
 def reset (step_button, env, action_sliders, obs_table, obs_status, points_label):
@@ -144,19 +152,23 @@ def main ():
 
     qapp = QApplication (sys.argv)
 
+    f = open('res/Combinear.qss')
+    stylesheet = f.read()
+    f.close ()
+
     window = QMainWindow ()
     window.setWindowTitle ("Ökolopoly")
-    window.setWindowIcon (QIcon("imgs/icon2.png"))
+    window.setWindowIcon (QIcon("res/imgs/icon2.png"))
     window.resize (800, 100)
     window.show()
 
     action_options = [
-        {'name': "Sanierung",       "icon": "imgs/s.png",  "min": env.Amin[env.SANIERUNG],       "max": env.Amax[env.SANIERUNG],       "default": 0},
-        {'name': "Produktion",      "icon": "imgs/pr.png", "min": env.Amin[env.PRODUKTION],      "max": env.Amax[env.PRODUKTION],      "default": 0},
-        {'name': "Aufklärung",      "icon": "imgs/a.png", "min": env.Amin[env.AUFKLAERUNG],      "max": env.Amax[env.AUFKLAERUNG],     "default": 0},
-        {'name': "Lebensqualität",  "icon": "imgs/l.png", "min": env.Amin[env.LEBENSQUALITAET],  "max": env.Amax[env.LEBENSQUALITAET], "default": 0},
-        {'name': "Vermehrungsrate", "icon": "imgs/v.png",  "min": env.Amin[env.VERMEHRUNGSRATE], "max": env.Amax[env.VERMEHRUNGSRATE]},
-        {'name': "Bonuspunkte",     "icon": "imgs/b.png",  "min": env.Amin[5],                   "max": env.Amax[5], "default": 0},
+        {'name': "Sanierung",       "icon": "res/imgs/s.png",  "min": env.Amin[env.SANIERUNG],       "max": env.Amax[env.SANIERUNG],       "default": 0},
+        {'name': "Produktion",      "icon": "res/imgs/pr.png", "min": env.Amin[env.PRODUKTION],      "max": env.Amax[env.PRODUKTION],      "default": 0},
+        {'name': "Aufklärung",      "icon": "res/imgs/a.png", "min": env.Amin[env.AUFKLAERUNG],      "max": env.Amax[env.AUFKLAERUNG],     "default": 0},
+        {'name': "Lebensqualität",  "icon": "res/imgs/l.png", "min": env.Amin[env.LEBENSQUALITAET],  "max": env.Amax[env.LEBENSQUALITAET], "default": 0},
+        {'name': "Vermehrungsrate", "icon": "res/imgs/v.png",  "min": env.Amin[env.VERMEHRUNGSRATE], "max": env.Amax[env.VERMEHRUNGSRATE], "default": 0},
+        {'name': "Bonuspunkte",     "icon": "res/imgs/b.png",  "min": env.Amin[5],                   "max": env.Amax[5], "default": 0},
     ]
 
     table_headers = [
@@ -179,7 +191,7 @@ def main ():
     controls_widget = QWidget ()
     controls_widget.setFixedWidth (300)
     controls_widget.setLayout (controls_layout)
-    controls_widget.setStyleSheet (open('Combinear.qss').read())
+    controls_widget.setStyleSheet (stylesheet)
     
     # Set fonts
     title_font = QFont ()
@@ -219,10 +231,10 @@ def main ():
     
     # Set buttons
     step_button  = QPushButton ("Step")
-    step_button.setStyleSheet(open('Combinear.qss').read())
+    step_button.setStyleSheet(stylesheet)
     
     reset_button = QPushButton ("Reset")
-    reset_button.setStyleSheet(open('Combinear.qss').read())
+    reset_button.setStyleSheet(stylesheet)
     
     buttons_layout = QHBoxLayout ()
     buttons_layout.setContentsMargins (0, 0, 0, 0)
@@ -237,7 +249,6 @@ def main ():
 
     # Make table
     obs_table = QTableWidget (len (table_headers), 0)
-    obs_table.setStyleSheet (open('Combinear.qss').read()) 
   
     for i in range (len (table_headers)):
         row_header = QTableWidgetItem (table_headers[i])
@@ -251,7 +262,7 @@ def main ():
     obs_layout.addWidget (obs_status, 0, Qt.AlignCenter)
     obs_widget = QWidget ()
     obs_widget.setLayout (obs_layout)
-    obs_widget.setStyleSheet (open('Combinear.qss').read())
+    obs_widget.setStyleSheet (stylesheet)
     
     obs_status.setStyleSheet ("color: #F2C063")
     obs_status.setFont(text_font)
