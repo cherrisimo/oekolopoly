@@ -33,9 +33,10 @@ pip install -e .
 
 ## Use Cases
 ### Das Projekt via Command Prompt öffnen
-#### Use Case 1: UI starten
+#### Use Case 1: GUI starten
 ```
-python oekolopoly-gui/oeko_gui.py
+cd oekolopoly-gui
+python oeko_gui.py
 ```
 
 #### Use Case 2: Tests starten
