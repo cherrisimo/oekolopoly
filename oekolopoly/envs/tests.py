@@ -6,19 +6,34 @@ print()
 
 instructions = (
     
+    ('reset', "10 Rounds Game Test"),
+    #          S    Pr   A    L    V    A>V
+    ('step' , (0,   0,   0,   8,   0,   0)),   # 1
+    ('step' , (0,   0,   9,   0,   0,   0)),   # 2
+    ('step' , (0,   0,   11,  0,   0,  -4)),   # 3
+    ('step' , (0,  -6,   0,   6,   0,  -4)),   # 4
+    ('step' , (0,  -2,   2,   6,   0,  -5)),   # 5
+    ('step' , (9,   2,   0,   0,   0,   0)),   # 6
+    ('step' , (8,   2,   0,   0,   0,   0)),   # 7
+    ('step' , (3,   2,   0,   0,   2,   0)),   # 8
+    ('step' , (2,  -5,  0,    0,   5,  -5)),   # 9
+    ('step' , (3,  -5,  0,    0,   5,  -5)),   # 10
+    ('step' , (2,   5,  0,    0,   0,  -2)),   # 11
+
+    
     # Test if given value is out ouf bounds 
-    ('reset', "Assert Test"),
+    ('reset', "AssertionError Test"),
     ('step' , (1,  2,  3,  2,  0,  0)),
-    ('step' , (40,  0,  0,  0,  0,  0)),
+    ('step' , (40,  0,  0,  0,  0, 0)),
     ('step' , (3,  2,  2,  2,  0,  0)),
 
-    ('reset', "Invalid Turn Test"),
+    ('reset', "ValueError Test"),
     ('step' , (20,  0,  0,  0,  0,  0)),
     ('step' , (0,  0,  0,  0,  0,  0)),
 
+
     # Test of special case Aufklärung - Fenster 9 - Vermehrungsrate
     # If max 4 points are allowed but 5 are given, 4 points are added to the region
-
     ('reset', "Extra Points Test (0)", (1, 12, 26,  10, 20, 13, 21, 0, 1, 0, 8)),
     ('step' , (0,  0,  0,  0,  0,  0)),
 
@@ -40,14 +55,13 @@ instructions = (
     ('reset', "Extra Points Test (3)", (1, 12, 26,  10, 20, 13, 21, 0, 1, 0, 8)),
     ('step' , (0,  0,  0,  0,  0, -2)),
 
-    ('reset', "Complete game test"),
-    ('step' , (1,  2,  3,  2,  0,  0)),
-    ('step' , (3,  2,  2,  2,  0,  0)),
-    ('step' , (0, -4,  3,  3,  0,  0)),
-    ('step' , (0,  0,  0,  4,  0,  0)),
-    ('step' , (0,  0,  0,  4,  0,  0)),
-    ('step' , (0,  0,  0,  8,  0,  0)),
-    ('step' , (0,  0,  0,  5,  0,  0)),
+
+    # ('reset', "Zero Test"),
+    # ('step' , (0,  0,  0,  0,  0,  0)),
+    # ('step' , (0,  0,  0,  0,  0,  0)),
+    # ('step' , (0,  0,  0,  0,  0,  0)),
+
+    
 )
 
 done = False
@@ -76,23 +90,20 @@ for instruction in instructions:
             a[5] -= env.Amin[5]
             try:
                 obs, reward, done, info = env.step (a)
-                print ("Step: Round {} \n"
+                print ("\nStep: Round {} \n"
                        "    Action: {}\n"
-                       "    A:      {}\n"
                        "    V:      {}\n"
-                       "    obs:    {}\n"
                        "    reward: {}\n"
-                       "    done:   {}\n"
-                       "    info:   {}".format (env.V[env.ROUND], action, a, tuple(env.V), obs, reward, done, info))
+                       "    info:   {}".format (env.V[env.ROUND], action, tuple(env.V), reward, info))
             except ValueError as e:
                 print ("Step: ValueError ({})".format (str(e)))
                 print ("    Action:", action)
-                print ("    A:     ", a)
+                #print ("    A:     ", a)
                 print ("    V:     ", tuple (env.V))
             except AssertionError as e:
                 print ("Step: AssertionError ({})". format (str(e)))
                 print ("    Action:", action)
-                print ("    A:     ", a)
+                #print ("    A:     ", a)
                 print ("    V:     ", tuple (env.V))
 
                 
