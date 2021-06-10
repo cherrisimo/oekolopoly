@@ -1,4 +1,4 @@
-## gym-oekolopoly [![Python 3.9](https://img.shields.io/badge/python-3.9-blue)](https://img.shields.io/badge/python-3.9-blue)
+# gym-oekolopoly [![Python 3.9](https://img.shields.io/badge/python-3.9-blue)](https://img.shields.io/badge/python-3.9-blue)
 
 Das Projekt basiert sich auf dem kybernetischen Spiel Ökolopoly entwickelt von Frederic Vester und veröffentlicht in 1983. 
 
