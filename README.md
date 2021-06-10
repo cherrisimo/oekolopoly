@@ -35,14 +35,12 @@ pip install -e .
 ### Das Projekt via Command Prompt öffnen
 #### Use Case 1: UI starten
 ```
-  cd oekolopoly-gui
-	python oeko_gui.py
+python oekolopoly-gui/oeko_gui.py
 ```
 
 #### Use Case 2: Tests starten
 ```
-  cd oekolopoly/envs
-	python oekolopoly/envs/tests.py
+python oekolopoly/envs/tests.py
 ```
 
 ### Das Projekt via Spyder, bzw. andere IDEs öffnen
