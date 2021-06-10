@@ -46,3 +46,10 @@ python oekolopoly/envs/tests.py
 
 ### Das Projekt via Spyder, bzw. andere IDEs öffnen
 Die Dateien oeko_gui.py, oeko_env.py, tests.py immer von einer neuen Konsole laufen lassen.
+
+## Rechte
+### GUI
+Template: res/Combinear/Combinear.qss
+Rechte Benutzung: res/Combinear/License.txt
+Icons: https://icons8.com
+
