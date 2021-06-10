@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap, QIcon, QFont, QBrush, QColor
+from PyQt5.QtGui import QPixmap, QIcon, QFont
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QPushButton, QSlider, QLabel, QTableWidget, QTableWidgetItem, QHBoxLayout, QVBoxLayout, QGridLayout
 
 import gym
@@ -123,10 +123,14 @@ def step (step_button, env, action_sliders, obs_table, obs_status, points_label)
     if valid_move:
         if done:
             step_button.setEnabled (False)
-            obs_status.setText ("Done | Bilanz: {}".format(env.reward))
+            obs_status.setText ("{}\n"
+                                "Bilanz: {}\n"
+                                "Reward: {}".format (info['done_reason'], round(env.balance), round(env.reward)))
             for action_slider in action_sliders: action_slider.reset ()
         else:
-            obs_status.setText ("Round {}".format(env.V[env.ROUND]))
+            obs_status.setText ("Round {} \n"
+                                "Bilanz: {}\n"
+                                "Reward: {}".format (env.V[env.ROUND], round(env.balance), round(env.reward)))
             for action_slider in action_sliders: action_slider.reset ()
 
         if env.V[env.VALID_TURN]:
@@ -139,7 +143,9 @@ def reset (step_button, env, action_sliders, obs_table, obs_status, points_label
     env.reset ()
     for action_slider in action_sliders: action_slider.reset ()
     step_button.setEnabled (True)
-    obs_status.setText ("Round 0")
+    obs_status.setText ("Round 0 \n"
+                        "Bilanz: 0 \n"
+                        "Reward: 0")
 
     obs_table.setColumnCount (0)
     update_obs_table (obs_table, list(env.V))
@@ -152,12 +158,12 @@ def main ():
 
     qapp = QApplication (sys.argv)
 
-    f = open('res/Combinear.qss')
+    f = open('res/Combinear/Combinear.qss')
     stylesheet = f.read()
     f.close ()
 
     window = QMainWindow ()
-    window.setWindowTitle ("Ökolopoly")
+    window.setWindowTitle ("Oekolopoly")
     window.setWindowIcon (QIcon("res/imgs/icon2.png"))
     window.resize (800, 100)
     window.show()
@@ -165,24 +171,24 @@ def main ():
     action_options = [
         {'name': "Sanierung",       "icon": "res/imgs/s.png",  "min": env.Amin[env.SANIERUNG],       "max": env.Amax[env.SANIERUNG],       "default": 0},
         {'name': "Produktion",      "icon": "res/imgs/pr.png", "min": env.Amin[env.PRODUKTION],      "max": env.Amax[env.PRODUKTION],      "default": 0},
-        {'name': "Aufklärung",      "icon": "res/imgs/a.png", "min": env.Amin[env.AUFKLAERUNG],      "max": env.Amax[env.AUFKLAERUNG],     "default": 0},
-        {'name': "Lebensqualität",  "icon": "res/imgs/l.png", "min": env.Amin[env.LEBENSQUALITAET],  "max": env.Amax[env.LEBENSQUALITAET], "default": 0},
+        {'name': "Aufklaerung",     "icon": "res/imgs/a.png",  "min": env.Amin[env.AUFKLAERUNG],     "max": env.Amax[env.AUFKLAERUNG],     "default": 0},
+        {'name': "Lebensqualitaet", "icon": "res/imgs/l.png",  "min": env.Amin[env.LEBENSQUALITAET], "max": env.Amax[env.LEBENSQUALITAET], "default": 0},
         {'name': "Vermehrungsrate", "icon": "res/imgs/v.png",  "min": env.Amin[env.VERMEHRUNGSRATE], "max": env.Amax[env.VERMEHRUNGSRATE], "default": 0},
-        {'name': "Bonuspunkte",     "icon": "res/imgs/b.png",  "min": env.Amin[5],                   "max": env.Amax[5], "default": 0},
+        {'name': "Aufklaerung > Vermehrungsrate",     "icon": "res/imgs/b.png",  "min": env.Amin[5], "max": env.Amax[5],                   "default": 0},
     ]
 
     table_headers = [
         "Sanierung",
         "Produktion",
-        "Aufklärung",
-        "Lebensqualität",
+        "Aufklaerung",
+        "Lebensqualitaet",
         "Vermehrungsrate",
         "Umweltbelastung",
-        "Bevölkerung",
+        "Bevoelkerung",
         "Politik",
-        "Valid turn",
-        "Round",
-        "Points"
+        "Gültiger Zug",
+        "Runde",
+        "Aktionspunkte"
     ]
     
     # Set sliders and buttons
@@ -206,7 +212,7 @@ def main ():
     column_font = QFont ()
     column_font.setItalic(True)
     
-    controls_title = QLabel ("Aktionslider")
+    controls_title = QLabel ("Aktionen")
     controls_title.setFont (title_font)
     
     points_label = QLabel ()
