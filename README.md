@@ -49,9 +49,8 @@ Die Dateien oeko_gui.py, oeko_env.py, tests.py immer von einer neuen Konsole lau
 
 ## Rechte
 ### GUI
-Template: res/Combinear/Combinear.qss
+- Template: res/Combinear/Combinear.qss
 
-Rechte Benutzung: res/Combinear/License.txt
-
-Icons: https://icons8.com
+- Rechte für Benutzung des Templates: res/Combinear/License.txt
+- Icons: https://icons8.com
 
