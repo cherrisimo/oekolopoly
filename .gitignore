@@ -1,0 +1,3 @@
+oekolopoly.egg-info/*
+oekolopoly/__pycache__/*
+oekolopoly/envs/__pycache__/*

@@ -59,6 +59,7 @@ class OekoEnv(gym.Env):
             spaces.Discrete(2),     # 8 valid turn: 1 - valid, 0 - not valid
             spaces.Discrete(31),    # 9 round
             spaces.Discrete(37)))   # 10 points
+        self.rew_points=0
     
     
     def update_values (self, V, action):
@@ -183,7 +184,7 @@ class OekoEnv(gym.Env):
     
     
     def step(self, action):
-        assert (self.action_space.contains (action))
+        assert (self.action_space.contains (action)), "AssertionError: action not in action_space"
 
         # Transform action space
         action = list(action)
@@ -260,13 +261,13 @@ class OekoEnv(gym.Env):
                 self.V[self.POINTS] += boxC
                 self.V[self.POINTS] += boxD
 
-
+            boxD  = gb.get_boxD  (self.V[self.LEBENSQUALITAET])                
+            a = float( (boxD*3 + self.V[self.POLITIK]) * 10)
+            self.rew_points = int(a)
+            
             if done:
-                boxD  = gb.get_boxD  (self.V[self.LEBENSQUALITAET])
-                
-                a = float( (boxD*3 + self.V[self.POLITIK]) * 10)
                 b = float(self.V[self.ROUND] + 3)
-                
+                #print(a,b,a/b)
                 self.balance = round(float(a/b), 2)
                 
                 if self.V[self.ROUND] in range(10, 31):
@@ -283,12 +284,12 @@ class OekoEnv(gym.Env):
 
         # Transform V in obs
         self.obs = list(self.V - self.Vmin)
-        assert (self.observation_space.contains(self.obs))
+        assert (self.observation_space.contains(self.obs)), "AssertionError: obs not in observation_space"
 
         # if done_info == None:
         #    done_info = "Das Spiel setzt fort."
 
-        return self.obs, self.reward, done, {'balance': self.balance, 'done_reason': done_info}
+        return self.obs, self.reward, done, {'balance': self.balance, 'done_reason': done_info, 'rew_points': self.rew_points}
 
 
     def reset(self):
