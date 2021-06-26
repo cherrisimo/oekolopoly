@@ -221,7 +221,7 @@ class OekoEnv(gym.Env):
 
             # Update boxes and V accordingly
             self.V, done, done_info = self.update_values(self.V, action)
-            
+             
             # Update points and round 
             self.V[self.POINTS] -= used_points            
             self.V[self.ROUND] += 1
