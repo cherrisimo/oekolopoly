@@ -263,6 +263,7 @@ def main ():
         obs_table.setVerticalHeaderItem (i, row_header)
         if i == len (table_headers) - 1 or i == len (table_headers) - 2 or i == len (table_headers) - 3:
             row_header.setFont(column_font)
+            
         
     
 
