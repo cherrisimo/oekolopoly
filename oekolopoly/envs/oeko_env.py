@@ -37,28 +37,28 @@ class OekoEnv(gym.Env):
         self.Amin = np.array([ 0,-28,  0,  0,  0, -5])
         self.Amax = np.array([28, 28, 28, 28, 28,  5])
 
-        self.action_space = spaces.Tuple((
-            spaces.Discrete(29),   # 0 Sanierung
-            spaces.Discrete(57),   # 1 Produktion
-            spaces.Discrete(29),   # 2 Aufklärung
-            spaces.Discrete(29),   # 3 Lebensqualität
-            spaces.Discrete(29),   # 4 Vermehrungsrate
-            spaces.Discrete(11)))  # 5 box9 Aufklärung > Vermehrung
+        self.action_space = spaces.MultiDiscrete([
+            29,   # 0 Sanierung
+            57,   # 1 Produktion
+            29,   # 2 Aufklärung
+            29,   # 3 Lebensqualität
+            29,   # 4 Vermehrungsrate
+            11,   # 5 box9 Aufklärung > Vermehrung
+        ])
         
-        self.observation_space = spaces.Tuple((
-            spaces.Discrete(29),    # 0 Sanierung 
-            spaces.Discrete(29),    # 1 Produktion
-            spaces.Discrete(29),    # 2 Aufklärung
-            spaces.Discrete(29),    # 3 Lebensqualität
-            spaces.Discrete(29),    # 4 Vermehrungsrate
-            
-            spaces.Discrete(29),    # 5 Umweltbelastung
-            spaces.Discrete(48),    # 6 Bevölkerung
-            spaces.Discrete(48),    # 7 Politik
+        self.observation_space = spaces.MultiDiscrete([
+            29,    # 0 Sanierung 
+            29,    # 1 Produktion
+            29,    # 2 Aufklärung
+            29,    # 3 Lebensqualität
+            29,    # 4 Vermehrungsrate
+            29,    # 5 Umweltbelastung
+            48,    # 6 Bevölkerung
+            48,    # 7 Politik
+            31,    # 8 Runde
+            37,    # 9 Aktionspunkte für nächste Runde
+        ])
 
-            spaces.Discrete(2),     # 8 valid turn: 1 - valid, 0 - not valid
-            spaces.Discrete(31),    # 9 round
-            spaces.Discrete(37)))   # 10 points
         self.rew_points=0
     
     
@@ -226,21 +226,16 @@ class OekoEnv(gym.Env):
             self.V[self.POINTS] -= used_points            
             self.V[self.ROUND] += 1
             
-            if  self.V[self.POINTS] <  0:
-                self.V[self.POINTS] = 0
-                done = True
-                done_info = 'Minimale Anzahl von Aktionspunkten erreicht'
-
-            if  self.V[self.POINTS] > 36:
-                self.V[self.POINTS] = 36
-                done = True
-                done_info = 'Maximale Anzahl von Aktionspunkten erreicht'
-
             # Clip values if not in range
             for i in range(8):
                 if  self.V[i] not in range (self.Vmin[i],  self.Vmax[i] + 1):
                     self.V[i] = max( self.Vmin[i], min( self.Vmax[i],  self.V[i]))
                     done = True
+            
+            if  self.V[self.POINTS] <  0:
+                self.V[self.POINTS] = 0
+                done = True
+                done_info = 'Minimale Anzahl von Aktionspunkten erreicht'
             
             if  self.V[self.ROUND] == 30:
                 done = True
@@ -260,6 +255,12 @@ class OekoEnv(gym.Env):
                 self.V[self.POINTS] += boxB
                 self.V[self.POINTS] += boxC
                 self.V[self.POINTS] += boxD
+                
+            if  self.V[self.POINTS] > 36:
+                self.V[self.POINTS] = 36
+                done = True
+                done_info = 'Maximale Anzahl von Aktionspunkten erreicht'
+
 
             boxD  = gb.get_boxD  (self.V[self.LEBENSQUALITAET])                
             a = float( (boxD*3 + self.V[self.POLITIK]) * 10)
@@ -307,4 +308,7 @@ class OekoEnv(gym.Env):
             8,  #10 Points
         ])
         
-        return self.V
+        self.obs = self.V - self.Vmin
+        assert (self.observation_space.contains(self.obs)), "AssertionError: obs not in observation_space"
+        
+        return self.obs
