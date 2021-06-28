@@ -265,7 +265,6 @@ def main ():
             row_header.setFont(column_font)
             
         
-    
 
     # Set status
     obs_status = QLabel ()
