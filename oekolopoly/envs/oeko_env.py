@@ -55,8 +55,9 @@ class OekoEnv(gym.Env):
             29,    # 5 Umweltbelastung
             48,    # 6 Bevölkerung
             48,    # 7 Politik
-            31,    # 8 Runde
-            37,    # 9 Aktionspunkte für nächste Runde
+            2,     # 8 Valid_turn 
+            31,    # 9 Runde
+            37,    # 10 Aktionspunkte für nächste Runde
         ])
 
         self.rew_points=0
