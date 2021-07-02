@@ -128,7 +128,7 @@ def step (step_button, env, action_sliders, obs_table, obs_status, points_label)
                                 "Reward: {}".format (info['done_reason'], round(env.balance), round(env.reward)))
             for action_slider in action_sliders: action_slider.reset ()
         else:
-            obs_status.setText ("Round {} \n"
+            obs_status.setText ("Runde {} \n"
                                 "Bilanz: {}\n"
                                 "Reward: {}".format (env.V[env.ROUND], round(env.balance), round(env.reward)))
             for action_slider in action_sliders: action_slider.reset ()
@@ -143,7 +143,7 @@ def reset (step_button, env, action_sliders, obs_table, obs_status, points_label
     env.reset ()
     for action_slider in action_sliders: action_slider.reset ()
     step_button.setEnabled (True)
-    obs_status.setText ("Round 0 \n"
+    obs_status.setText ("Runde 0 \n"
                         "Bilanz: 0 \n"
                         "Reward: 0")
 
