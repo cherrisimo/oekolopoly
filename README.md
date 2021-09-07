@@ -45,12 +45,11 @@ python oekolopoly/envs/tests.py
 ```
 
 ### Das Projekt via Spyder, bzw. andere IDEs öffnen
-Die Dateien oeko_gui.py, oeko_env.py, tests.py immer von einer neuen Konsole laufen lassen.
+In der [`__init__.py`](https://github.com/cherrisimo/oekolopoly/blob/main/oekolopoly/__init__.py) sind Codezeilen hinzugefügt, die das Environment aus dem Gym Register löschen, so dass es kein Pflicht ist, die Dateien oeko_gui.py, oeko_env.py, tests.py immer von einer neuen Konsole laufen zu lassen.
 
 ## Rechte
 ### GUI
 - Template: res/Combinear/Combinear.qss
-
 - Rechte für Benutzung des Templates: res/Combinear/License.txt
 - Icons: https://icons8.com
 
